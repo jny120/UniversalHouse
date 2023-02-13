@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <table class="table table-responsive" id="myTable">
+        <!-- <thead style="display: table-header-group;"> -->
+        <thead>
+            <!-- <tr>
+                <th style="flex: auto;" class="img">name</th>
+                <th style="flex: auto;" class="id">position</th>
+                <th style="flex: auto;" class="name">name</th>
+                <th style="flex: auto;" class="pwd">password</th>
+                <th style="flex: auto;" class="loc">location</th>
+                <th style="flex: auto;" class="email">Email</th>
+                <th style="flex: auto; display: none;" class="gender">Gender</th>
+                <th style=" flex: auto; display: none;" class="btd">Birthday</th>
+                <th style="flex: auto; display: none;" class="rt">RegisterTime</th>
+                <th style="flex: auto; display: none;" class="ll">LastLogin</th>
+                <th style="flex: auto; display: none;" class="vrfc">Verification
+                </th>
+                <th style="flex: auto; display: none;" class="perm">Permission</th>
+                <th style="flex: auto">function</th>
+            </tr> -->
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <!-- Popper js -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        member = {
+            "name": "Tiger Nixon",
+            "hr": {
+                "position": "System Architect",
+                "salary": "$320,800",
+                "start_date": "2011/04/25"
+            },
+            "contact": {
+                "office": "Edinburgh",
+                "extn": "5421"
+            }
+        }
+        // $('#myTable').dataTable({
+        //     "ajax": {
+        //         "url": "localhost:8080/getCurrentUser.do",
+        //         "dataSrc": function (json) {
+
+        //             for (var i = 0, ien = json.data.length; i < ien; i++) {
+        //                 json.data[i][0] = '<a href="/message/' + json.data[i][0] + '>View message</a>';
+        //             }
+        //             return json.data;
+        //         }
+        //     }
+        // });
+
+        // $.ajax({
+        //     type: "get",
+        //     url: "/getCurrentUser.do",
+        //     // data: memberId,
+        //     success: function (result) {
+        //         Swal.fire("response success")
+        //         //刪除當前的tr
+        //         // $(this).parent().remove();
+        //     },
+        //     error: function (result) {
+        //         Swal.fire("response error")
+        //     }
+        // });
+
+
+
+    </script>
+</body>
+
+</html>
