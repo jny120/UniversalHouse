@@ -217,9 +217,9 @@ public class UserProjectController {
 		Member member = memberService.findByName(p.getName());
 		Member servicer = memberService.findByMemberId(serviceID);
 
-		if (serviceID.equals(member.getMemberId())) {
-			evaluation.setServicer(member);
-			evaluation.setMember(servicer);
+		if (!serviceID.equals(member.getMemberId())) {
+			evaluation.setServicer(servicer);
+			evaluation.setMember(member);
 			evaluation.setProject(project);
 			evaluationService.saveEvaluation(evaluation);
 		}
@@ -276,9 +276,9 @@ public class UserProjectController {
 		Project project = projectService.findBypjID(pjID);
 		Member servicer = memberService.findByMemberId(serviceID);
 
-		if (serviceID.equals(member.getMemberId())) {
-			evaluation.setMember(member);
-			evaluation.setServicer(servicer);
+		if (!serviceID.equals(member.getMemberId())) {
+			evaluation.setMember(servicer);
+			evaluation.setServicer(member);
 			evaluation.setProject(project);
 			System.out.println(evaluation);
 			evaluationService.saveEvaluation(evaluation);

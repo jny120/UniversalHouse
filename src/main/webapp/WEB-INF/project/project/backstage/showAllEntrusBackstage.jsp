@@ -54,7 +54,7 @@ body {
 	font-size: 20px;
 }
 
-.main-content-wrapper .header-area .amado-nav li a{
+.main-content-wrapper .header-area .amado-nav li a {
 	font-size: 20px;
 }
 
@@ -184,6 +184,16 @@ body {
 .main-content-wrapper .header-area .amado-nav li a {
 	color: white;
 }
+
+#preview {
+	background: #000;
+	color: #fff;
+	padding: 6px 8px;
+	border-radius: 3px;
+	font-size: 13px;
+	display: none;
+	position: absolute;
+}
 </style>
 </head>
 
@@ -285,6 +295,11 @@ body {
 				</div>
 				<hr />
 
+
+
+				<div>
+					<canvas id="myChart"></canvas>
+				</div>
 
 				<div class="cart-table clearfix">
 
@@ -408,6 +423,7 @@ body {
 	<!-- Active js -->
 	<script src="/amado-master/js/active.js"></script>
 	<!-- 我額外增加的script -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
 		if ($('#showShopSideBar1').show()) {
 			$('#showShopSideBar2').hide();
@@ -533,7 +549,53 @@ body {
 				});
 			}
 			alert("下架成功，請重新整理")
-		}
+		};
+
+		const ctx = document.getElementById('myChart');
+        var labelArray = [];
+        var countArray = [];
+        var totCount = 0;
+        $.ajax({
+            type: "post",
+            url: "/admin/getAllMonthlyRegistMembers.do",
+            success: function (members) {
+                members.forEach(member => {
+                    labelArray.push(member.month.toString() + '月');
+                    totCount += member.counts;
+                    countArray.push(totCount);
+                });
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labelArray,
+                        datasets: [{
+                            label: '總註冊人數',
+                            data: countArray,
+                        }]
+                    },
+                    // data: dataConfig,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        // plugins: {
+                        //     legend: {
+                        //         position: 'top',
+                        //     },
+                        //     title: {
+                        //         display: true,
+                        //         text: ''
+                        //     }
+                        // }
+                    }
+                });
+            },
+            error: function (members) {
+                Swal.fire("response error");
+            }
+        });
 	</script>
 </body>
 

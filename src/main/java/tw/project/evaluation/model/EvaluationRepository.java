@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import tw.member.model.Member;
 import tw.project.project.model.Project;
@@ -20,4 +21,9 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Integer>
 	public Page<Evaluation> findByProjectAndServicer(Project project,Member member, Pageable pageable);
 
 	public Page<Evaluation> findByMember(Member member, Pageable pageable);
+	
+	@Query(value = "select AVG(evClientEV) from Evaluation Where pjID =?1", nativeQuery = true)
+	public Integer avgEV(int pjID);
+	
+	public Page<Evaluation> findByprojectAndEvClientEV(Project project,Integer ev, Pageable pageable);
 }

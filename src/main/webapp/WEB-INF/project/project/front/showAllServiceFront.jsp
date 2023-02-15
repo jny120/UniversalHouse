@@ -268,7 +268,7 @@ body {
 					</c:if>
 					<c:if test="${not empty project}">
 						<c:forEach var="pj" items="${project}">
-							<div class="col-12 col-sm-3 col-md-12 col-xl-2">
+							<div class="col-12 col-sm-3 col-md-12 col-xl-3">
 								<div class="single-product-wrapper">
 									<!-- Product Image -->
 									<div class="product-img">

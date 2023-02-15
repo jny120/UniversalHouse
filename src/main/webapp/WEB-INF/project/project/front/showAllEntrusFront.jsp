@@ -172,7 +172,8 @@ body {
 
 .imgCss {
 	width: 100px;
-	margin-right: 10px;
+	border-radius: 50%;
+	margin-right: 30px;
 	margin-bottom: 10px;
 	vertical-align: middle;
 }
