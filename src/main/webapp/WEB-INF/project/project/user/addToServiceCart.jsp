@@ -415,7 +415,8 @@ body {
 	<!-- 我額外增加的script -->
 	<script>
 	$('.tb').on('click', '#complete', function() {
-		var ev_ID = $('#pjID').val();
+		var ev_ID = $(this).parent().siblings().eq(0).children('input').val();
+		var td = $(this).parent().siblings().eq(4);
 		console.log(ev_ID);
 		$.ajax({
 			type : 'post',
@@ -425,6 +426,9 @@ body {
 			},
 			success : function() {
 				alert('已完成案件')
+			},
+			complete : function(){
+				td.html('已完成');
 			}
 		});
 	});

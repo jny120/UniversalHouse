@@ -190,16 +190,7 @@
                             currentUser = member;
                             //	logined: show user info //else show login button
                             let htmlStr = null;
-                            // if (member.length != 0) {
-                            //     htmlStr =
-                            //         '<a href="/logout" class="btn amado-btn active">Logout</a>' +
-                            //         '<p class="userInfo" style="margin-bottom:0">User: ' + member.name + '</p>' +
-                            //         '<p class="userInfo" style="margin-bottom:0">Last login time: ' + member.lastLogin + '</p>';
-                            // } else {
-                            //     htmlStr = '<a href="/login" class="btn amado-btn active">Login</a>';
-                            // }
                             $('#loginDiv').append(htmlStr)
-
                         },
                         error: function (member) {
                             Swal.fire("response error");
@@ -229,22 +220,12 @@
                                         data: countArray,
                                     }]
                                 },
-                                // data: dataConfig,
                                 options: {
                                     scales: {
                                         y: {
                                             beginAtZero: true
                                         }
                                     },
-                                    // plugins: {
-                                    //     legend: {
-                                    //         position: 'top',
-                                    //     },
-                                    //     title: {
-                                    //         display: true,
-                                    //         text: ''
-                                    //     }
-                                    // }
                                 }
                             });
 

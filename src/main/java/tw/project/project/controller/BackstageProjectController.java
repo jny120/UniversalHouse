@@ -229,6 +229,7 @@ public class BackstageProjectController {
 
 	// 刪除案件
 	@PostMapping("/deleteProject")
+	@ResponseBody
 	public void deleteProject(@RequestParam("pjID") int pjID) {
 		Project project = projectService.findBypjID(pjID);
 		projectService.daleteProject(project);

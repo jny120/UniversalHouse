@@ -45,4 +45,15 @@ public class SpaceService {
 	public List<Space> readByLikeCity(String city){
 		return sRepo.findByCityLike(city);
 	}
+	
+	//read By SpaceType
+	public List<Space> readBySpaceType(String spacetype){
+		return sRepo.findBySpaceType(spacetype);
+	}
+	
+	//read By SpaceType
+	public List<Space> readBySpaceTypeAndCity(String spacetype, String city){
+		return sRepo.findBySpaceTypeAndCity(spacetype, city);
+	}
+	
 }

@@ -166,7 +166,7 @@
                         <ul>
                             <li class="active"><a href="/">首頁</a></li>
                             <li><a href="/admin/showAllMember">會員</a></li>
-                            <li><a href="/myProjects/showAllEntrusBacktage/1">專案</a></li>
+                            <li><a href="/admin/projects/showAllEntrusBacktage/1">專案</a></li>
                             <li><a href="/admin/spacereadall.controller">場地租借</a></li>
                             <li><a href="/admin/showAllcourse">課程</a></li>
                             <li><a href="/admin/testBackstage">測驗</a></li>
@@ -461,7 +461,7 @@
                             //判斷是否已認證信箱,若無顯示發送驗證信按鈕
                             let vrfcStr = member.verification == 1 ?
                                 '<td style="flex-shrink:1;" class="vrfc"><span> 已驗證 </span></td>'
-                                : '<td style="flex-shrink:1;" class="vrfc"><input type="button" class="btn sendMail" value="send mail" style="font-size:10px; margin: 3px; width: 100%; height: 40px; white-space: normal;"></td>';
+                                : '<td style="flex-shrink:1;" class="vrfc"><input type="button" class="btn sendMail" value="發送驗證信" style="font-size:10px; margin: 3px; width: 100%; height: 40px; white-space: normal;"></td>';
 
                             let userIdentity = member.permission == 1 ?
                                 '管理員' : '用戶';

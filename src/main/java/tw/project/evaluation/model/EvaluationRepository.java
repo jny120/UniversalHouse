@@ -25,5 +25,8 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Integer>
 	@Query(value = "select AVG(evClientEV) from Evaluation Where pjID =?1", nativeQuery = true)
 	public Integer avgEV(int pjID);
 	
+	@Query(value = "SELECT COUNT(*) FROM EVALUATION WHERE EVCOMPLETIONDATE  IS NOT NULL AND SERVICEPK=?1", nativeQuery = true)
+	public Integer countServicer(int memberPk);
+	
 	public Page<Evaluation> findByprojectAndEvClientEV(Project project,Integer ev, Pageable pageable);
 }

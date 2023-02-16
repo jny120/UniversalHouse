@@ -21,6 +21,19 @@
       <link rel="stylesheet" href="/amado-master/style.css">
 
       <style>
+        .main-content-wrapper .header-area .amado-nav li a {
+          font-size: 14px;
+          text-transform: uppercase;
+          position: relative;
+          z-index: 1;
+          padding: 20px 0;
+          display: block;
+          line-height: 0.9;
+          color: #C0C0C0;
+
+          font-weight: normal;
+        }
+
         .main-content-wrapper .cart-table-area table thead tr th {
           border-top: none;
           border-bottom: none;
@@ -70,7 +83,18 @@
             <ul>
               <li><a href="memberBackstage" style="color:white">Member</a></li>
               <li><a href="spaceBackstage" style="color:white">Space</a></li>
-              <li><a href="testBackstage" style="color:white">Test</a></li>
+              <li><a href="testBackstage" style="color:white" id="openShopSideBar1">Test</a></li>
+              <div class="catagories-menu" id="showShopSideBar1">
+                <ul>
+                  <li><a href="/admin/insertTest" style="text-shadow: 0px 0px 5px #C0C0C0;">存入功能</a>
+                  </li>
+                  <li><a href="/admin/ImgMaintain.controller" style="text-shadow: 0px 0px 5px #C0C0C0;">圖庫功能</a></li>
+                  <!-- <li><a href="#" style="text-shadow: 0px 0px 5px #C0C0C0;">設計</a></li>
+                                <li><a href="#" style="text-shadow: 0px 0px 5px #C0C0C0;">資訊</a></li>
+                                <li><a href="#" style="text-shadow: 0px 0px 5px #C0C0C0;">影視</a></li>
+                                <li><a href="#" style="text-shadow: 0px 0px 5px #C0C0C0;">顧問</a></li> -->
+                </ul>
+              </div>
               <li><a href="projectBackstage" style="color:white">Project</a></li>
               <li><a href="forumBackstage" style="color:white">Forum</a></li>
             </ul>
@@ -192,7 +216,45 @@
       <!-- Active js -->
       <script src="/amado-master/js/active.js"></script>
       <script>
+        if ($('#showShopSideBar1').hide()) {
+          $('#showShopSideBar2').show();
+        } else if ($('#showShopSideBar2').show()) {
+          $('#showShopSideBar1').hide();
+        }
+
+        $('#openShopSideBar1').mouseover(function () {
+          $('#showShopSideBar1').show();
+        })
+
+        $('#openShopSideBar1').mouseout(function () {
+          $('#showShopSideBar1').hide();
+        })
+
+        $('#showShopSideBar1').mouseover(function () {
+          $(this).show();
+        })
+
+        $('#showShopSideBar1').mouseout(function () {
+          $(this).hide();
+        })
+
+        $('#openShopSideBar2').mouseover(function () {
+          $('#showShopSideBar2').show();
+        })
+
+        $('#openShopSideBar2').mouseout(function () {
+          $('#showShopSideBar2').hide();
+        })
+
+        $('#showShopSideBar2').mouseover(function () {
+          $(this).show();
+        })
+
+        $('#showShopSideBar2').mouseout(function () {
+          $(this).hide();
+        })
         $(function () {
+
           const gallery = {
             imagePk: "",
             imageNumber: "",

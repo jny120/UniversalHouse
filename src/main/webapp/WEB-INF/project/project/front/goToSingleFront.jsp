@@ -99,6 +99,10 @@
 .evaluationBlock {
 	margin-top: 50px;
 }
+
+.main-content-wrapper .header-area .amado-nav li a {
+	font-size: 20px;
+}
 </style>
 </head>
 
@@ -208,7 +212,6 @@
 										data-ride="carousel">
 										<ol class="carousel-indicators">
 
-
 											<c:forEach var="img" items="${project.pjImgs}"
 												varStatus="status">
 												<li class="active" data-target="#product_details_slider"
@@ -278,18 +281,34 @@
 								</div>
 							</div>
 
-
-
 							<div class="col-12 col-lg-3 memberSiderBar">
 								<br>
 								<div class="single_product_desc">
-									<img src="/amado-master/img\product-img\pro-big-1.jpg" alt="">
+									<c:choose>
+										<c:when test="${project.member.memberImage == null}">
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss" src="/images/member/member.png"
+													alt="Product" width="200px" vspace="10" hspace="10">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss"
+													src="/ShowMemberImgServlet.do/${project.member.memberId}"
+													alt="Product" width="200px" vspace="10" hspace="10"
+													align="left">
+											</div>
+											<hr>
+										</c:otherwise>
+									</c:choose>
 									<table class="tbStyle">
 										<tr>
 											<td id="memberID">${project.member.memberId}</td>
 										</tr>
 										<tr>
-											<td>評價分數</td>
+											<td><c:forEach var="i" begin="1" end="${ev.evClientEV}">
+													<i class="fa fa-star" aria-hidden="true"></i>
+												</c:forEach></td>
 										</tr>
 										<tr>
 											<td>${project.member.location}</td>
@@ -298,7 +317,7 @@
 											<td>${project.member.email}</td>
 										</tr>
 										<tr>
-											<td>成交件數</td>
+											<td>成交件數： ${count}件</td>
 										</tr>
 									</table>
 								</div>
@@ -315,8 +334,9 @@
 								</c:forEach>
 							</div>
 						</div>
-						<input class="col-12 col-lg-1" type="button" onClick="window.location.reload();" value="全部">
-						<input class="starField col-12 col-lg-1" type="button" value="1星">
+						<input class="col-12 col-lg-1" type="button"
+							onClick="window.location.reload();" value="全部"> <input
+							class="starField col-12 col-lg-1" type="button" value="1星">
 						<input class="starField col-12 col-lg-1" type="button" value="2星">
 						<input class="starField col-12 col-lg-1" type="button" value="3星">
 						<input class="starField col-12 col-lg-1" type="button" value="4星">
@@ -333,13 +353,13 @@
 										<div class="evaluationBlock col-12 col-sm-12"
 											style="width: 100%; margin-left: 25px;">
 											<c:choose>
-												<c:when test="${ev.member.memberImage == null}">
+												<c:when test="${project.member.memberImage == null}">
 													<div style="height: 100px;">
 														<img class="imgCss" src="/images/member/member.png"
 															alt="Product" width="200px" vspace="10" hspace="10"
 															align="left">
 														<div class="ratings">
-															<c:forEach var="i" begin="1" end="${ev.evClientEV}">
+															<c:forEach var="i" begin="1" end="${evAvg}">
 																<i class="fa fa-star" aria-hidden="true"></i>
 															</c:forEach>
 														</div>
@@ -353,11 +373,11 @@
 												<c:otherwise>
 													<div style="height: 100px;">
 														<img class="imgCss"
-															src="/ShowMemberImgServlet.do/${ev.member.memberId}"
+															src="/ShowMemberImgServlet.do/${project.member.memberId}"
 															alt="Product" width="200px" vspace="10" hspace="10"
 															align="left">
 														<div class="ratings">
-															<c:forEach var="i" begin="1" end="${ev.evClientEV}">
+															<c:forEach var="i" begin="1" end="${evAvg}">
 																<i class="fa fa-star" aria-hidden="true"></i>
 															</c:forEach>
 														</div>
@@ -414,7 +434,23 @@
 							<div class="col-12 col-lg-4 memberSiderBar">
 								<br>
 								<div class="single_product_desc">
-									<img src="/amado-master/img\product-img\pro-big-1.jpg" alt="">
+									<c:choose>
+										<c:when test="${project.member.memberImage == null}">
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss" src="/images/member/member.png"
+													alt="Product" width="200px" vspace="10" hspace="10">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss"
+													src="/ShowMemberImgServlet.do/${project.member.memberId}"
+													alt="Product" width="200px" vspace="10" hspace="10"
+													align="left">
+											</div>
+											<hr>
+										</c:otherwise>
+									</c:choose>
 									<table class="tbStyle">
 										<tr>
 											<td>${project.member.memberId}</td>
@@ -429,7 +465,7 @@
 											<td>${project.member.email}</td>
 										</tr>
 										<tr>
-											<td>成交件數</td>
+											<td>成交件數： ${count}件</td>
 										</tr>
 									</table>
 								</div>
@@ -652,7 +688,8 @@
 							var evStar = $(this).val();
 							var ev = evStar.substr(0, 1);
 
-							$.ajax({
+							$
+									.ajax({
 										type : 'get',
 										url : '/projects/projectFrontEv/1',
 										dataType : 'JSON',

@@ -86,7 +86,7 @@
 										<tr>
 											<th style="flex: 10%; font-size: 18px;">testPk</th>
 											<th style="flex: 10%; font-size: 18px;">testId</th>
-											<th style="flex: 10%; font-size: 18px;">examinationQuestion</th>
+											<th style="flex: 10%; font-size: 18px;">examinationquestion</th>
 											<th style="flex: 10%; font-size: 18px;">field</th>
 											<th style="flex: 10%; font-size: 18px;">options</th>
 											<th style="flex: 10%; font-size: 18px;">options2</th>
@@ -101,7 +101,7 @@
 											<tr>
 												<td style="flex: auto;">${testBean.testPk}</td>
 												<td style="flex: auto;">${testBean.testId}</td>
-												<td style="flex: auto;">${testBean.examinationQuestion}</td>
+												<td style="flex: auto;">${testBean.examinationquestion}</td>
 												<td style="flex: auto;">${testBean.field}</td>
 												<td style="flex: auto;">${testBean.options}</td>
 												<td style="flex: auto;">${testBean.options2}</td>

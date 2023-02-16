@@ -1,9 +1,7 @@
 package tw.test.model;
 
-
 import java.io.Serializable;
 import java.sql.Blob;
-
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "totalscore")
 @Component
-public class totalScore implements Serializable{
-	
+public class totalScore implements Serializable {
 
 	/**
 	 * 
@@ -35,41 +32,34 @@ public class totalScore implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	
+
 	@Column(name = "imagenumber")
 	private String imagenumber;
-	
+
 	@Column(name = "memberid")
 	private String memberid;
-	
+
 	@Column(name = "inputradio")
 	private String inputradio;
-	
+
 	@Column(name = "inputradio2")
 	private String inputradio2;
-	
+
 	@Column(name = "fraction")
 	private String fraction;
-	
+
 	@Column(name = "testimage")
 	private Blob testimage;
-	
-	
+
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="fkimgid")
+	@JoinColumn(name = "fkimgid")
 	private galleryBean gallerybean;
-	
-	
+
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="fkuserid")
+	@JoinColumn(name = "fkuserid")
 	private tester tester;
-	
-	
-
-
-
 
 	public tester getTester() {
 		return tester;
@@ -88,24 +78,21 @@ public class totalScore implements Serializable{
 		Blob blob = null;
 		this.testimage = blob;
 	}
-//	public tester getTester() {
-//		return tester;
-//	}
-//
-//	public void setTester(tester tester) {
-//		this.tester = tester;
-//	}
+	// public tester getTester() {
+	// return tester;
+	// }
+	//
+	// public void setTester(tester tester) {
+	// this.tester = tester;
+	// }
 
 	public galleryBean getGallerybean() {
 		return gallerybean;
 	}
 
-
-
 	public void setGallerybean(galleryBean gallerybean) {
 		this.gallerybean = gallerybean;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -163,7 +150,6 @@ public class totalScore implements Serializable{
 		this.testimage = testImage;
 	}
 
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -184,7 +170,7 @@ public class totalScore implements Serializable{
 		builder.append(", gallerybean=");
 		builder.append(gallerybean);
 		builder.append(", tester=");
-//		builder.append(tester);
+		// builder.append(tester);
 		builder.append("]");
 		return builder.toString();
 	}

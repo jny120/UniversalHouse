@@ -57,4 +57,8 @@ public class EvaluationService {
 	public Page<Evaluation> findByProjectAndEvClientEV(Project project,Integer ev, Pageable pageable){
 		return evaluationRepository.findByprojectAndEvClientEV(project, ev, pageable);
 	};
+	
+	public Integer countServicer(int memberPk) {
+		return evaluationRepository.countServicer(memberPk);
+	};
 }

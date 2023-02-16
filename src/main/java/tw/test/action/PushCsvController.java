@@ -18,26 +18,26 @@ import tw.test.model.testCenterBean;
 @Controller
 public class PushCsvController {
 
-	@GetMapping("/PushCsv")
-	public String processMainAction() {
-		return "/test/push/PushCsv";
-	}
+	// @GetMapping("/PushCsv")
+	// public String processMainAction() {
+	// return "/test/push/PushCsv";
+	// }
 
-	@GetMapping("/insertTest")
-	public String processMainAction2() {
-		return "/test/push/insertTest";
-	}
+	// @GetMapping("/insertTest")
+	// public String processMainAction2() {
+	// return "/test/push/insertTest";
+	// }
 
-	@Autowired
-	private TestService tService;
+	// @Autowired
+	// private TestService tService;
 
-	@PostMapping("/PushCsv.do")
-	private String processRequest(
-			@RequestParam("file") MultipartFile file,
-			Model m) {
+	// @PostMapping("/PushCsv.do")
+	// private String processRequest(
+	// @RequestParam("file") MultipartFile file,
+	// Model m) {
 
-		List<testCenterBean> testCenterBean = tService.pushCsv(file);
-		m.addAttribute("testCenterBean", testCenterBean);
-		return "/test/push/pushCsvOK";
-	}
+	// List<testCenterBean> testCenterBean = tService.pushCsv(file);
+	// m.addAttribute("testCenterBean", testCenterBean);
+	// return "/test/push/pushCsvOK";
+	// }
 }

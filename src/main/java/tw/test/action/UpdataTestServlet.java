@@ -48,16 +48,6 @@ public class UpdataTestServlet {
 		return "/test/show/showUpdatePage";
 	}
 
-	@RequestMapping("/admin/UpdataTest.controller")
-	public String processRequest(
-			testCenterBean tBean,
-			Model m) {
-		System.out.println("sad");
-		
-		tService.updataTest(tBean);
-		return "ok";
-	}
-
 	@PostMapping("/UpdataImgNumber")
 	public void UpdataImgNumber(
 			galleryBean gBean,

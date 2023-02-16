@@ -110,6 +110,7 @@ public class Member implements Serializable {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Article> articles = new ArrayList<Article>();
 	
+
 	@JsonIgnore
 	@JsonIgnoreProperties("member")
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

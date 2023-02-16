@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import tw.forum.model.Article;
+import tw.forum.model.Status;
+import tw.forum.model.StatusService;
 import tw.member.model.Member;
 import tw.member.model.MemberService;
 
@@ -88,6 +91,8 @@ public class ShowMemberInfoServlet{
 			return null;
 		}
 	}
+	@Autowired
+	private StatusService statusService;
 	
 	@PostMapping("/users/delete.do/{memberId}")
 	@ResponseBody
@@ -95,6 +100,21 @@ public class ShowMemberInfoServlet{
 		Member member =  service.findByMemberId(memberId);
 		service.delete(member);
 		System.out.println(memberId);
+		
+
+	//-------------------------------------------
+			if(statusService.findByMemberPk(member.getMemberPk()) != null) {
+				
+				List<Status> allStatus = statusService.findByMemberPk(member.getMemberPk());
+				for(Status s : allStatus) {
+					Article article = s.getArticle();
+					article.setUserStatus(null);
+					statusService.deleteById(s.getStatusId());
+				}
+			}
+	//-------------------------------------------
+		
+		
 		return null;
 	}
 	

@@ -2,49 +2,85 @@ package tw.space.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import tw.space.model.OrderGroupBySpaceNo;
 import tw.space.model.Space;
+import tw.space.model.SpaceOrder;
+import tw.space.model.SpaceOrderService;
 import tw.space.model.SpaceService;
 
-@RequestMapping("/admin")
 @Controller
+@RequestMapping("/admin")
+@SessionAttributes(names={"spaces","sOrder","thisPage","totalPages"})
 public class SpaceAdminController {
 
 	@Autowired
 	private SpaceService sService;
 	
+	@Autowired
+	private SpaceOrderService soService;
 	
-//	test
-	@GetMapping("/datatable.controller")
-	public String processTest(){
-		return "space/admin/datatableTest"; 
+	
+//	readAll Order
+	@GetMapping("/orderreadall.controller/{NO}")
+	public String processAllOrders(@PathVariable("NO") int pageNo, Model m) {
+		//readALL & pages
+		int pageSize = 10;
+		PageRequest pageable = PageRequest.of(pageNo-1, pageSize);
+		Page<SpaceOrder> page = soService.findAllByPage(pageable);
+		List<SpaceOrder> list = page.getContent();
+		m.addAttribute("sOrders",list); //所有訂單資訊
+		m.addAttribute("thisPage",page); //現在頁數
+		m.addAttribute("totalPages",page.getTotalPages()); //所有頁數
+		
+		//read space from space order
+		List<Space> spaces = new ArrayList<Space>();
+		for(SpaceOrder order : list ) {
+			spaces.add(sService.readBySpaceNo(order.getSpaceNo()));
+		}
+		
+		m.addAttribute("spaces",spaces);
+		return "space/admin/ordersSystem";
 	}
 	
-//	readAll
+
+	
+//	readAll Space
 	@GetMapping("/spacereadall.controller")
 	public String processReadAll(Model m){
 		List<Space> list = sService.readAll();
 		m.addAttribute("spaces", list);
 		return "space/admin/adminSystem"; 
+		
 	}
 	
 	
@@ -64,14 +100,16 @@ public class SpaceAdminController {
 								@RequestParam("pic")@Nullable MultipartFile pic,
 								Model m) {
 		Map<String, String> errors = new HashMap<String, String>();
-		m.addAttribute("errors",errors);
 		
+		m.addAttribute("errors",errors);
+//		Space space = (Space) m.getAttribute("Detail");
 		Space space = new Space();
 		
 		if (spaceName==null || spaceName.length()==0) {
 			errors.put("spaceName", "required");
 		}
 		space.setSpaceName(spaceName);
+	
 		
 		if (city==null || city.length()==0) {
 			errors.put("city", "required");
@@ -189,8 +227,21 @@ public class SpaceAdminController {
 		m.addAttribute("update", space);
 		return "space/admin/updateSpace";
 	}
+
 	
-//	update 
+//	update order.status
+	@PostMapping("/updateStatus.controller")
+	public String processUpdateOrderStatus(@RequestParam("orderId") int orderId,
+											@RequestParam("status") String status) {
+		System.out.println("-------status-------" + status);
+		SpaceOrder order = soService.readByOrderId(orderId);
+		order.setStatus(status);
+		soService.update(order);
+		return "redirect:/admin/orderreadall.controller/1";
+	}
+	
+	
+//	update space
 	@PostMapping("/spaceupdate.controller")
 	public String processUpdate(@RequestParam("confirm") int spaceNo,
 								@RequestParam("spaceName") String spaceName,		@RequestParam("city")@Nullable String city,
@@ -309,12 +360,40 @@ public class SpaceAdminController {
 	}
 	
 //	readByCity
-	@GetMapping("/spacequery.controller")
+	@GetMapping("/orderquery.controller")
 	public String processReadByCity(@RequestParam("city") String city, Model m) {
 		List<Space> list = sService.readByLikeCity(city);
 		m.addAttribute("Qresult", list);
 		return "/space/admin/querySpace";
 	}
 	
+//	export SpaceOrder CSV
+	@ResponseBody
+	@GetMapping("/exportcsv.controller")
+	public void processExportCSV(HttpServletResponse response) throws IOException {
+		response.setContentType("text/csv; charset=UTF-8");
+		response.setHeader("Content-Disposition", "attachment; filename=Space_Order.csv");
+		
+		List<SpaceOrder> data = soService.readAll();
+		
+		try(PrintWriter pw = response.getWriter()) {
+			pw.println("訂單編號,會員帳號,使用日期,場地編號,下單時間,付款方式,訂單狀態,備註資訊,聯絡人,聯絡方式");
+			for (SpaceOrder so : data) {
+				pw.println(so.getOrderId()+","+so.getMemberId()+","+so.getOrderDate()+","+so.getSpaceNo()
+				+","+so.getBookTime()+","+so.getPayment()+","+so.getStatus()+","+so.getRemarks()+","+so.getcPerson()+","+so.getContact());
+			}
+		}
+	}
 	
+//	Order Chart.
+	@GetMapping("/spaceorderchart.controller")
+	public String processGroupBySpaceNo(){
+		List<OrderGroupBySpaceNo> list = soService.findGroupBySpaceNo();
+		list.subList(0, 2);
+		return "/space/admin/orderChart";
+	}
+	
+	
+	
+
 }

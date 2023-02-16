@@ -1,5 +1,7 @@
 package tw.member.model;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,13 @@ public class MemberService {
 	
 	@Autowired
 	private MemberRepository mRepo;
+	
+	 public void updateLastLogin(String memberId) {
+	      Member user = findByMemberId(memberId);
+	      Date date = new Date();
+	      user.setLastLogin(new Timestamp(date.getTime()));
+	      save(user);
+	 }
 	
 	public List<Member> findAll(){
 		return mRepo.findAll();

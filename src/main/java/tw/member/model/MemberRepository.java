@@ -34,7 +34,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 	String hql = "SELECT "
 			+ "  DATEPART(month, registerTime) AS month, COUNT(memberId) as counts "
 			+ "FROM member "
-			+ "GROUP BY DATEPART(YEAR, registerTime), DATEPART(month, registerTime)";
+			+ "GROUP BY DATEPART(YEAR, registerTime), DATEPART(month, registerTime) "
+		    + "ORDER BY DATEPART(YEAR, registerTime) ASC, DATEPART(month, registerTime) ASC";
 	@Query(value = hql, nativeQuery = true)
 	public List<MemberGroupByRegistMon> getGroupByMonthMembers();
 		

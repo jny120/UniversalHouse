@@ -45,7 +45,7 @@ public class FrontProjectController {
 	// 顯示可接案的委託項目
 	@GetMapping("/showAllEntrusFront/{pageNo}")
 	public String showAllEntrusFront(@PathVariable("pageNo") int pageNo, Model model) {
-		int pageSize = 10;
+		int pageSize = 7;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndPjStatus("委託", "上架中", pageable);
 
@@ -60,7 +60,7 @@ public class FrontProjectController {
 	@GetMapping("/selectAllEntrusFront/{pageNo}")
 	public String selectEntrusName(@PathVariable("pageNo") int pageNo, @RequestParam("findPJName") String findPjName,
 			Model model) {
-		int pageSize = 10;
+		int pageSize = 7;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndPjNameLike("委託", findPjName, pageable);
 
@@ -74,7 +74,7 @@ public class FrontProjectController {
 	// 顯示可接案的服務項目
 	@GetMapping("/showAllServiceFront/{pageNo}")
 	public String showAllServiceFront(@PathVariable("pageNo") int pageNo, Model model) {
-		int pageSize = 12;
+		int pageSize = 8;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndPjStatus("服務", "上架中", pageable);
 
@@ -89,7 +89,7 @@ public class FrontProjectController {
 	@GetMapping("/selectAllServiceFront/{pageNo}")
 	public String selectServiceName(@PathVariable("pageNo") int pageNo, @RequestParam("findPJName") String findPjName,
 			Model model) {
-		int pageSize = 12;
+		int pageSize = 8;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndPjNameLike("服務", findPjName, pageable);
 
@@ -104,6 +104,10 @@ public class FrontProjectController {
 	@GetMapping("/projectFront/{pjID}")
 	public String goToSingleBackstage(@PathVariable("pjID") int pjID, Model model) {
 		Project findByPJId = projectService.findBypjID(pjID);
+		Integer countMember = 0;
+		
+			countMember = evaluationService.countServicer(findByPJId.getMember().getMemberPk());
+			
 		if ((findByPJId.getPjExCompletionDate()) != null) {
 			String format = (findByPJId.getPjExCompletionDate()).toInstant().atOffset(ZoneOffset.UTC)
 					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -121,6 +125,7 @@ public class FrontProjectController {
 			model.addAttribute("evaluation", evaluations);
 
 		}
+		model.addAttribute("count", countMember);
 		model.addAttribute("project", findByPJId);
 		return "/project/project/front/goToSingleFront";
 	}
@@ -129,7 +134,7 @@ public class FrontProjectController {
 	@ResponseBody
 	public List<Evaluation> evAvg(@PathVariable("pageNo") int pageNo, @RequestParam("pjID") int pjID,
 			@RequestParam("ev") int ev) {
-		int pageSize = 12;
+		int pageSize = 8;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Project project = projectService.findBypjID(pjID);
 		Page<Evaluation> evaluations = evaluationService.findByProjectAndEvClientEV(project, ev, pageable);
@@ -167,7 +172,7 @@ public class FrontProjectController {
 	@GetMapping("/selectEntrustField/{field}/{pageNo}")
 	public String selectEntrustField(@PathVariable("pageNo") int pageNo, @PathVariable("field") String field,
 			Model model) {
-		int pageSize = 5;
+		int pageSize = 7;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndFieldNameLike("委託", field, pageable);
 
@@ -181,9 +186,9 @@ public class FrontProjectController {
 	@GetMapping("/selectServiceField/{field}/{pageNo}")
 	public String selectServiceField(@PathVariable("pageNo") int pageNo, @PathVariable("field") String field,
 			Model model) {
-		int pageSize = 12;
+		int pageSize = 8;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-		Page<Project> page = projectService.findByPjClassAndFieldNameLike("服務", field, pageable);
+		Page<Project> page = projectService.findByPjClassAndFieldName("服務", field, pageable);
 
 		model.addAttribute("nowPage", pageNo);
 		model.addAttribute("totalPages", page.getTotalPages());
