@@ -106,7 +106,7 @@
 							<li><a href="spaceAdminSystem.controller">場地租借</a></li>
 							<li><a href="/">課程</a></li>
 							<li><a href="/testBackstage">測驗</a></li>
-							<li><a href="frontPage">論壇</a></li>
+							<li><a href="/frontPage">論壇</a></li>
 						</ul>
 					</nav>
 					<!-- Button Group -->

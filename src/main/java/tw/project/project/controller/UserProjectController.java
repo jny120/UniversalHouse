@@ -91,7 +91,7 @@ public class UserProjectController {
 
 	@GetMapping("/showMyEntrustingProject/{pageNo}")
 	public String showMyEntrustingProject(@PathVariable("pageNo") int pageNo, Principal p, Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Evaluation> page = evaluationService.findByMember(member, pageable);
@@ -104,7 +104,7 @@ public class UserProjectController {
 
 	@GetMapping("/showMyServicingProject/{pageNo}")
 	public String showMyServicingProject(@PathVariable("pageNo") int pageNo, Principal p, Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 5;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Evaluation> page = evaluationService.findByServicer(member, pageable);
@@ -117,7 +117,7 @@ public class UserProjectController {
 
 	@GetMapping("/showMyEntrus/{pageNo}")
 	public String showEntrus(@PathVariable("pageNo") int pageNo, Principal p, Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 10;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndMember("委託", member, pageable);
@@ -138,7 +138,7 @@ public class UserProjectController {
 	@RequestMapping(path = "/saveEntrus", method = RequestMethod.POST)
 	public String saveEntrus(Project project, Principal p, Model model) throws ParseException {
 
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		project.setMember(member);
 		project.setPjClass("委託");
 		Date date = new Date();
@@ -162,7 +162,7 @@ public class UserProjectController {
 	@RequestMapping(path = "/saveService", method = RequestMethod.POST)
 	public String saveEntrus(Project project, @RequestPart("pjImg") List<MultipartFile> files, Principal p, Model model)
 			throws ParseException, IOException {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 
 		project.setPjClass("服務");
 		project.setMember(member);
@@ -196,7 +196,7 @@ public class UserProjectController {
 	@GetMapping("/selectAllEntrusUser/{pageNo}")
 	public String selectEntrusName(@PathVariable("pageNo") int pageNo, @RequestParam("findPJName") String findPjName, Principal p,
 			Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 10;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndMemberAndPjNameLike("委託", member, findPjName, pageable);
@@ -214,12 +214,12 @@ public class UserProjectController {
 			Model model) {
 		Evaluation evaluation = new Evaluation();
 		Project project = projectService.findBypjID(pjID);
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		Member servicer = memberService.findByMemberId(serviceID);
 
-		if (serviceID.equals(member.getMemberId())) {
-			evaluation.setServicer(member);
-			evaluation.setMember(servicer);
+		if (!serviceID.equals(member.getMemberId())) {
+			evaluation.setServicer(servicer);
+			evaluation.setMember(member);
 			evaluation.setProject(project);
 			evaluationService.saveEvaluation(evaluation);
 		}
@@ -227,7 +227,7 @@ public class UserProjectController {
 
 	@GetMapping("/showMyService/{pageNo}")
 	public String showService(@PathVariable("pageNo") int pageNo, Principal p, Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 10;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndMember("服務", member, pageable);
@@ -240,7 +240,7 @@ public class UserProjectController {
 
 	@PostMapping("/showServiceEvaluation/{pageNo}")
 	public String showServiceEvaluation(@PathVariable("pageNo") int pageNo, Project project, Principal p, Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 10;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Evaluation> page = evaluationService.findByProjectAndServicer(project, member, pageable);
@@ -255,7 +255,7 @@ public class UserProjectController {
 	@GetMapping("/selectAllServiceUser/{pageNo}")
 	public String selectServiceName(@PathVariable("pageNo") int pageNo, @RequestParam("findPJName") String findPjName, Principal p,
 			Model model) {
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		int pageSize = 10;
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 		Page<Project> page = projectService.findByPjClassAndMemberAndPjNameLike("服務", member, findPjName, pageable);
@@ -272,13 +272,13 @@ public class UserProjectController {
 	public void addToServiceCart(@RequestParam("pjID") int pjID, @RequestParam("serviceID") String serviceID, Principal p,
 			Model model) {
 		Evaluation evaluation = new Evaluation();
-		Member member = memberService.findByName(p.getName());
+		Member member = memberService.findByMemberId(p.getName());
 		Project project = projectService.findBypjID(pjID);
 		Member servicer = memberService.findByMemberId(serviceID);
 
-		if (serviceID.equals(member.getMemberId())) {
-			evaluation.setMember(member);
-			evaluation.setServicer(servicer);
+		if (!serviceID.equals(member.getMemberId())) {
+			evaluation.setMember(servicer);
+			evaluation.setServicer(member);
 			evaluation.setProject(project);
 			System.out.println(evaluation);
 			evaluationService.saveEvaluation(evaluation);
@@ -288,6 +288,7 @@ public class UserProjectController {
 	// 通用Method
 
 	@PostMapping("/projectDeal")
+	@ResponseBody
 	public void deal(@RequestParam("ev_ID") int evID) {
 		Evaluation evaluation = evaluationService.findByEvID(evID);
 		Date date = new Date();
@@ -344,7 +345,7 @@ public class UserProjectController {
 
 		projectService.updateProject(project);
 
-		return "/project/projectUser";
+		return "redirect:/users/projects/showMyEntrustingProject/1";
 	}
 
 	// 更新案件
@@ -359,10 +360,18 @@ public class UserProjectController {
 
 	// 隱藏案件
 	@PostMapping("/deleteUserProject")
+	@ResponseBody
 	public String deleteProject(@RequestParam("pjID") int pjID) {
 		Project project = projectService.findBypjID(pjID);
 		project.setMember(null);
 		projectService.updateProject(project);
 		return "/project/projectUser";
+	}
+	
+	@PostMapping("/avgMemberCount")
+	@ResponseBody
+	public int avgMemberCount(Member member) {
+		Integer countServicer = evaluationService.countServicer(member.getMemberPk());
+		return countServicer;
 	}
 }

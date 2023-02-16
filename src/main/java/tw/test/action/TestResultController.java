@@ -3,6 +3,7 @@ package tw.test.action;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tw.test.model.galleryBean;
 import tw.test.model.galleryDao;
@@ -34,6 +37,43 @@ public class TestResultController {
 
 	@Autowired
 	private galleryDao gService;
+
+	@PostMapping("/TestResultreturn")
+	@ResponseBody
+	public String TestResultendreturn(
+			@RequestParam("total") @Nullable String totals,
+			@RequestParam("names") String name,
+			@RequestParam("fields") String field,
+			@RequestParam("inputradio2") @Nullable String inputradio2,
+			Model m) {
+		System.out.println(m);
+		System.out.println(field);
+		totalScore totalScore = new totalScore();
+		totalScore.setMemberId(name);
+		totalScore.setFraction(totals);
+		totalScore.setInputRadio(field.toString());
+		totalScore.setInputRadio2(inputradio2);
+		sService.save(totalScore);
+
+		return "success";
+	}
+
+	@GetMapping("/TestResult")
+	public String TestResultend(
+			@RequestParam("total") @Nullable String totals,
+			@RequestParam("names") String name,
+			@RequestParam("fields") String field,
+			@RequestParam("inputradio2") @Nullable String inputradio2,
+			Model m) {
+		totalScore totalScore = new totalScore();
+		totalScore.setMemberId(name);
+		totalScore.setFraction(totals);
+		totalScore.setInputRadio(field);
+		totalScore.setInputRadio2(inputradio2);
+		// System.out.println("sssssssssssssssssssss" + totalScore);
+		m.addAttribute("totalScore", totalScore);
+		return "test/show/showTestResult";
+	}
 
 	@PostMapping("/TestResultServlet")
 	private String processRequest(

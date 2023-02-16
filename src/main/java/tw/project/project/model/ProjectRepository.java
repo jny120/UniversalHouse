@@ -24,4 +24,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	public Page<Project> findByPjClassAndMemberAndPjNameLike(String pjClass, Member member, String string, Pageable pageable);
 
 	public Page<Project> findByPjClassAndFieldNameLike(String string, String field, Pageable pageable);
+
+	public Page<Project> findByPjClassAndFieldName(String string, String field, Pageable pageable);
 }

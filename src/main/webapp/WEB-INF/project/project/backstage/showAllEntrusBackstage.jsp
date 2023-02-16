@@ -54,7 +54,7 @@ body {
 	font-size: 20px;
 }
 
-.main-content-wrapper .header-area .amado-nav li a{
+.main-content-wrapper .header-area .amado-nav li a {
 	font-size: 20px;
 }
 
@@ -184,6 +184,16 @@ body {
 .main-content-wrapper .header-area .amado-nav li a {
 	color: white;
 }
+
+#preview {
+	background: #000;
+	color: #fff;
+	padding: 6px 8px;
+	border-radius: 3px;
+	font-size: 13px;
+	display: none;
+	position: absolute;
+}
 </style>
 </head>
 
@@ -218,13 +228,10 @@ body {
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
-				<ul class="titleStyle">
-					<li><a href="memberBackstage" style="color: white">Member</a></li>
-					<li><a href="/admin/spacereadall.controller"
-						style="color: white">Space</a></li>
-					<li><a href="testBackStage" style="color: white">Test</a></li>
-					<li><a href="/myProjects/showAllEntrusBacktage/1"
-						style="color: white">Project</a>
+				<ul>
+					<li class="active"><a href="/">首頁</a></li>
+					<li><a href="/admin/showAllMember">會員</a></li>
+					<li><a href="/admin/projects/showAllEntrusBacktage/1">專案</a>
 						<ul>
 
 							<li><a href="/admin/projects/showAllEntrusBacktage/1">管理所有委託案件</a></li>
@@ -232,11 +239,11 @@ body {
 							<li><a href="/admin/projects/showAllServiceBacktage/1">管理所有服務案件</a></li>
 							<li><a href="/admin/projects/saveServiceAction">新增服務案件</a></li>
 						</ul></li>
-					<li><a href="showAllcourse" style="color: white">Course</a></li>
-					<li><a href="forumBackstage" style="color: white">Forum</a></li>
+					<li><a href="/admin/spacereadall.controller">場地租借</a></li>
+					<li><a href="/admin/showAllcourse">課程</a></li>
+					<li><a href="/admin/testBackstage">測驗</a></li>
+					<li><a href="/admin/forumBackstage">論壇</a></li>
 				</ul>
-			</nav>
-			</ul>
 			</nav>
 			<!-- Button Group -->
 			<div class="amado-btn-group mt-30 mb-100">
@@ -284,7 +291,6 @@ body {
 					</div>
 				</div>
 				<hr />
-
 
 				<div class="cart-table clearfix">
 
@@ -408,6 +414,7 @@ body {
 	<!-- Active js -->
 	<script src="/amado-master/js/active.js"></script>
 	<!-- 我額外增加的script -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
 		if ($('#showShopSideBar1').show()) {
 			$('#showShopSideBar2').hide();
@@ -533,7 +540,7 @@ body {
 				});
 			}
 			alert("下架成功，請重新整理")
-		}
+		};
 	</script>
 </body>
 

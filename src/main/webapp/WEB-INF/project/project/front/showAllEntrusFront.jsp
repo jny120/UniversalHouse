@@ -172,7 +172,8 @@ body {
 
 .imgCss {
 	width: 100px;
-	margin-right: 10px;
+	border-radius: 50%;
+	margin-right: 30px;
 	margin-bottom: 10px;
 	vertical-align: middle;
 }
@@ -235,7 +236,7 @@ body {
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item active"><a class="nav-link" href="/">首頁</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="/projects/showAllEntrusFront/1">專案</a></li>
+						href="/projects/showAllServiceFront/1">專案</a></li>
 
 					<li><a href="/projects/showAllServiceFront/1"
 						id="openShopSideBar1">想找人才</a></li>
@@ -254,12 +255,12 @@ body {
 					<!--  Catagories  -->
 					<div class="catagories-menu" id="showShopSideBar2">
 						<ul>
-							<li><a href="/projects/selectServiceField/文書/1">文書</a></li>
-							<li><a href="/projects/selectServiceField/生活/1">生活</a></li>
-							<li><a href="/projects/selectServiceField/設計/1">設計</a></li>
-							<li><a href="/projects/selectServiceField/資訊/1">資訊</a></li>
-							<li><a href="/projects/selectServiceField/影視/1">影視</a></li>
-							<li><a href="/projects/selectServiceField/顧問/1">顧問</a></li>
+							<li><a href="/projects/selectEntrustField/文書/1">文書</a></li>
+							<li><a href="/projects/selectEntrustField/生活/1">生活</a></li>
+							<li><a href="/projects/selectEntrustField/設計/1">設計</a></li>
+							<li><a href="/projects/selectEntrustField/資訊/1">資訊</a></li>
+							<li><a href="/projects/selectEntrustField/影視/1">影視</a></li>
+							<li><a href="/projects/selectEntrustField/顧問/1">顧問</a></li>
 						</ul>
 					</div>
 					<li class="nav-item"><a class="nav-link"

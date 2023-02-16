@@ -97,22 +97,22 @@
 
 
 
-// 						$.ajax({
-// 							type: "POST",
-// 							url: "<c:url value='/TestResultServlet'/>",
+						// 						$.ajax({
+						// 							type: "POST",
+						// 							url: "<c:url value='/TestResultServlet'/>",
 
-// 							data: {
-// 								total: total,
-// 								name: name,
-// 							},
-							// 							success: function (response) {
-							// 								alert("response success");
+						// 							data: {
+						// 								total: total,
+						// 								name: name,
+						// 							},
+						// 							success: function (response) {
+						// 								alert("response success");
 
-							// 							},
-							// 							error: function (thrownError) {
-							// 								alert("response error")
-							// 							}
-// 						});
+						// 							},
+						// 							error: function (thrownError) {
+						// 								alert("response error")
+						// 							}
+						// 						});
 
 					})
 

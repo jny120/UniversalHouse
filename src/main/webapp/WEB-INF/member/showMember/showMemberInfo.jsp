@@ -44,6 +44,14 @@
 				.image-upload>input {
 					display: none;
 				}
+
+				.checkout_details_area form .form-control {
+					font-size: 20px;
+				}
+
+				.checkout_details_area form .nice-select {
+					font-size: 20px;
+				}
 			</style>
 
 		</head>
@@ -106,7 +114,7 @@
 							<li><a href="spaceAdminSystem.controller">場地租借</a></li>
 							<li><a href="/">課程</a></li>
 							<li><a href="/testBackstage">測驗</a></li>
-							<li><a href="frontPage">論壇</a></li>
+							<li><a href="/frontPage">論壇</a></li>
 						</ul>
 					</nav>
 					<!-- Button Group -->
@@ -171,31 +179,9 @@
 												</div>
 
 											</div>
-											<div class="col-12 mb-3">
-												<label for="location">地區: </label> <select class="w-100 nice-select"
-													id="location" name="location">
+											<div class="col-12 mb-3" id="locDiv">
+												<label for="location">地區: </label>
 
-													<option value="基隆" id="Keelung">基隆</option>
-													<option value="新北" id="New Taipei">新北</option>
-													<option value="台北" id="Taipei">台北</option>
-													<option value="桃園" id="Taoyuan">桃園</option>
-													<option value="新竹" id="Hsinchu">新竹</option>
-													<option value="苗栗" id="Miaoli">苗栗</option>
-													<option value="台中" id="Taichung">台中</option>
-													<option value="彰化" id="Changhua">彰化</option>
-													<option value="南投" id="Nantou">南投</option>
-													<option value="雲林" id="Yunli">雲林</option>
-													<option value="嘉義" id="Chiayi">嘉義</option>
-													<option value="台南" id="Taina">台南</option>
-													<option value="高雄" id="Kaohsiung">高雄</option>
-													<option value="屏東" id="Pingtung">屏東</option>
-													<option value="宜蘭" id="Yilan">宜蘭</option>
-													<option value="花蓮" id="Hualien">花蓮</option>
-													<option value="台東" id="Taitung">台東</option>
-													<option value="澎湖" id="Penghu">澎湖</option>
-													<option value="金門" id="Kinmen">金門</option>
-													<option value="馬祖" id="Lienchiang">馬祖</option>
-												</select>;
 											</div>
 											<div class="col-12 mb-3">
 												<div class="col-12 mb-3" id="verification">
@@ -219,12 +205,12 @@
 													placeholder="" name="birthday"> -->
 											</div>
 
-											<div class="col-12 mb-3">
+											<!-- <div class="col-12 mb-3">
 												<label for="permission">權限: </label>
 												<input type="text" class="form-control" id="permission"
 													placeholder="${LoginOK.permission}" readonly="readonly"
 													name="permission">
-											</div>
+											</div> -->
 											<div class="cart-btn col-12 mt-100">
 												<input class="btn amado-btn w-100" id="confirm" type="button"
 													value="確認修改">
@@ -359,6 +345,32 @@
 						}
 						$('#memberId').attr('placeholder', member.memberId);
 						$('#name').attr('placeholder', member.name);
+
+						let selectStr = '<select class="w-100 nice-select" id="location" name="location">' +
+							'<option value="基隆" id="Keelung">基隆</option>' +
+							'<option value="新北" id="New Taipei">新北</option>' +
+							'<option value="台北" id="Taipei">台北</option>' +
+							'<option value="桃園" id="Taoyuan">桃園</option>' +
+							'<option value="新竹" id="Hsinchu">新竹</option>' +
+							'<option value="苗栗" id="Miaoli">苗栗</option>' +
+							'<option value="台中" id="Taichung">台中</option>' +
+							'<option value="彰化" id="Changhua">彰化</option>' +
+							'<option value="南投" id="Nantou">南投</option>' +
+							'<option value="雲林" id="Yunli">雲林</option>' +
+							'<option value="嘉義" id="Chiayi">嘉義</option>' +
+							'<option value="台南" id="Taina">台南</option>' +
+							'<option value="高雄" id="Kaohsiung">高雄</option>' +
+							'<option value="屏東" id="Pingtung">屏東</option>' +
+							'<option value="宜蘭" id="Yilan">宜蘭</option>' +
+							'<option value="花蓮" id="Hualien">花蓮</option>' +
+							'<option value="台東" id="Taitung">台東</option>' +
+							'<option value="澎湖" id="Penghu">澎湖</option>' +
+							'<option value="金門" id="Kinmen">金門</option>' +
+							'<option value="馬祖" id="Lienchiang">馬祖</option></select>';
+						console.log()
+						if ($('#locDiv select').length == 0) {
+							$('#locDiv').append(selectStr);
+						}
 						$('#location option[value="' + member.location + '"]').attr("selected", true);
 						$('#email').attr('placeholder', member.email);
 						$('#gender').attr('placeholder', member.gender);

@@ -48,7 +48,7 @@
                 width: 100%;
                 height: 780px;
                 overflow-y: scroll;
-                padding: 10px;
+                padding: 10px 20px 10px 20px;
                 border: 1px solid #ccc;
             }
 
@@ -58,11 +58,27 @@
 
             .messageContainer {
                 display: flex;
-                justify-content: flex-start;
+                margin-bottom: 10px;
+            }
+
+            .displayFlex {
+                display: flex;
+            }
+
+            .messageContainer img {
+                margin: 5px;
+                width: 10%;
+                height: 10%;
+                border-radius: 50%;
             }
 
             .sendByUserMessage {
-                flex-direction: row-reverse
+                flex-direction: row-reverse;
+                padding-left: 10%;
+            }
+
+            .sendByFriendMessage {
+                padding-right: 10%;
             }
 
             .sender {
@@ -161,23 +177,23 @@
                 transition: visibility 0s, opacity 0.5s linear;
             }
 
-            #msgInputDiv:click {
+            .msgInputDiv:click {
                 visibility: visible;
                 opacity: 1;
             }
 
-            #msgInputDiv input {
+            .msgInputDiv input {
                 width: 80%;
                 height: 40px;
             }
 
-            #msgInputDiv button {
+            .msgInputDiv button {
                 margin-bottom: 10px;
                 height: 40px;
                 width: 15%;
             }
 
-            #msgInputDiv img {
+            .msgInputDiv img {
                 width: 120px;
                 margin: 0 10px 0 10px;
                 border-radius: 50%;
@@ -186,6 +202,14 @@
             #receiver {
                 font-size: 24px;
                 font-weight: bold;
+            }
+
+            .readed {
+                padding: 0 10px 0 10px;
+            }
+
+            .sendTime {
+                text-align: end;
             }
         </style>
     </head>
@@ -248,7 +272,7 @@
                         <li><a href="space.controller">場地租借</a></li>
                         <li><a href="/showAllProduct">課程</a></li>
                         <li><a href="/testBackstage">測驗</a></li>
-                        <li><a href="frontPage">論壇</a></li>
+                        <li><a href="/frontPage">論壇</a></li>
                     </ul>
                 </nav>
                 <!-- Button Group -->
@@ -286,10 +310,10 @@
                 </div>
                 <div id="messageDiv">
                     <!-- <input type="text" id="receiver" placeholder="Enter receiver's username" /> -->
-                    <div id="msgInputDiv">
+                    <div class="msgInputDiv" id="friendDiv">
 
                     </div>
-                    <div id="msgInputDiv">
+                    <div class="msgInputDiv">
                         <input type="text" id="message" placeholder="  輸入訊息" />
                         <button id="sendBtn" class="btn">發送</button>
                     </div>
@@ -377,6 +401,7 @@
                 var username, receiver, message, stompClient;
                 var count = 1;
 
+
                 // receiver = $('#receiver').value();
                 // console.log(receiver);
                 var currentUser;
@@ -414,6 +439,7 @@
                                     + '</div>'
                                     + '</div>';
                                 $('#friendListDiv').append(friendStr);
+                                $('#friendListDiv img').attr('class', 'friendImg')
                             });
                         }
                     });
@@ -421,8 +447,8 @@
 
                 function getUserImgStr(user) {
                     return userImgStr = user.haveImg == true ?
-                        '<img class="friendImg" src="' + '/ShowMemberImgServlet.do/' + user.memberId + '">'
-                        : '<img class="friendImg" src="/images/member/member.png">';
+                        '<img src="' + '/ShowMemberImgServlet.do/' + user.memberId + '">'
+                        : '<img  src="/images/member/member.png">';
                 }
 
                 function getLastRecord(friend) {
@@ -448,19 +474,20 @@
                         // document.getElementById("sendBtn").disabled = false;
                         console.log("Connected: " + frame);
 
+                        //接收一對一好友訊息
                         stompClient.subscribe('/users/' + currentUser.memberId + '/queue/private', function (payload) {
                             let chatMessage = JSON.parse(payload.body);
                             let sender = chatMessage.sender;
                             let message = chatMessage.message;
-                            console.log("Received message from " + sender + ": " + message);
-                            messageDivStr = '<div class="messageContainer">'
-                                + '<div>'
-                                + '<div class="messageContainer">'
-                                + '<p class="sender">' + sender + '</p>'
-                                + '<p class="message receivedMessage">' + message + '</p></div>'
-                                + '<div><p class="sendTime">' + moment().format('MM/DD h:mm a') + '</p></div>'
-                                + '</div></div>';
-                            $("#chatBox").prepend(messageDivStr);
+                            console.log(chatMessage)
+                            // console.log('read')
+                            if (message) {
+                                loadChatRecord();
+                            } else {
+                                // readMessageAndLoadChatRecord();
+                                console.log('read')
+                                loadChatRecord();
+                            }
                         });
 
                     });
@@ -473,23 +500,29 @@
                     }
                 });
 
+                //發送訊息
                 function sendMessage() {
-                    receiver = $('#receiver').text();
-                    message = document.getElementById("message").value;
-                    console.log(receiver)
+                    let receiverName = $('#friendDiv span').text();
+                    let receiverId = $('#friendDiv span').attr('id');
+                    let message = document.getElementById("message").value;
+                    console.log('name: ' + receiverName)
+                    console.log('id: ' + receiverId)
                     console.log(message)
                     stompClient.send("/app/chat", {}, JSON.stringify({
                         sender: currentUser.memberId,
-                        receiver: receiver,
+                        receiver: receiverId,
                         message: message
                     }));
                     let sendTime = moment();
                     messageDiv = '<div class="messageContainer sendByUserMessage">'
                         + '<div>'
-                        + '<div class="messageContainer">'
-                        + '<p class="sender">' + currentUser.memberId + '</p>'
+                        + '<div class="displayFlex sendByUserMessage">'
+                        // + '<p class="sender">' + currentUser.memberName + '</p>'
+                        + '<img src="/ShowMemberImgServlet.do/' + currentUser.memberId + '">'
                         + '<p class="message">' + message + '</p>'
                         + '</div>'
+                        + '<div class="displayFlex sendByUserMessage">'
+                        + '<p class="readed">未讀</p>'
                         + '<p class="sendTime">' + moment().format('MM/DD h:mm a') + '</p>'
                         + '</div>'
                         + '</div>';
@@ -499,46 +532,46 @@
                     console.log("Message sent to: ");
                 }
 
+
+
+
                 $('body').on('click', '.friend', function () {
                     let friendName = $(this).find('.friendName').text();
                     let friendImgSrc = $(this).children('.friendImg').attr('src');
-                    console.log(friendImgSrc);
-                    let htmlStr = '<img src="' + friendImgSrc + '">'
-                        + '<span id="receiver">' + friendName + '</span>';
-                    $('#msgInputDiv').html(htmlStr);
-                    $('#messageDiv').css({ 'visibility': 'visible', 'opacity': '1' });
                     let friendId = $(this).attr('id');
-                    let chatHistoryList = findChatRecord(friendId);
-                    console.log(chatHistoryList)
+                    console.log(friendImgSrc);
+                    let htmlStr = '<img id="friendImg" src="' + friendImgSrc + '">'
+                        + '<span id="' + friendId + '">' + friendName + '</span>';
+                    $('#friendDiv').html(htmlStr);
+                    $('#messageDiv').css({ 'visibility': 'visible', 'opacity': '1' });
+                    //已讀訊息
+                    // readMessage();
+                    //找跟friendId的聊天紀錄，寫進頁面當中
+                    loadChatRecord();
+                    // setInterval(loadChatRecord, 2000);
+                    // setInterval(readMessage, 1000);
 
-                    chatHistoryList.forEach(ch => {
-                        let senderName = ch.sender.name;
-                        let message = ch.message;
-                        if (senderName != currentUser.memberId) {
-                            messageDivStr = '<div class="messageContainer">'
-                                + '<div>'
-                                + '<div class="messageContainer">'
-                                + '<p class="sender ">' + senderName + '</p>'
-                                + '<p class="message receivedMessage">' + message + '</p>'
-                                + '</div><div>'
-                                + '<p class="sendTime">' + moment(ch.timestamp).format('MM/DD h:mm a') + '</p>'
-                                + '</div>'
-                                + '</div></div>';
-                        } else {
-                            messageDivStr = '<div class="messageContainer sendByUserMessage">'
-                                + '<div>'
-                                + '<div class="messageContainer">'
-                                + '<p class="sender">' + senderName + '</p>'
-                                + '<p class="message">' + message + '</p>'
-                                + '</div><div>'
-                                + '<p class="sendTime">' + moment(ch.timestamp).format('MM/DD h:mm a') + '</p>'
-                                + '</div>'
-                                + '</div></div>';
-                        }
-                        $("#chatBox").prepend(messageDivStr);
-                    });
                 })
 
+                // async function readMessageAndLoadChatRecord() {
+                //     try {
+                //         await readMessage();
+                //         await loadChatRecord();
+                //     } catch (error) {
+                //         console.log(error);
+                //     }
+                // }
+
+                //已讀訊息
+                function readMessage() {
+                    let receiverId = $('#friendDiv span').attr('id');
+                    stompClient.send("/app/read", {}, JSON.stringify({
+                        sender: currentUser.memberId,
+                        receiver: receiverId,
+                    }));
+                }
+
+                //從後端拿到聊天紀錄回傳list
                 function findChatRecord(friendId) {
                     let chatHistory;
                     $.ajax({
@@ -550,6 +583,55 @@
                         }
                     });
                     return chatHistory;
+                }
+
+
+                //載入聊天紀錄並寫到視窗
+                function loadChatRecord() {
+                    console.log('ReloadChatRecord')
+                    let friendId = $('#friendDiv span').attr('id');
+                    $("#chatBox").empty();
+                    //從後端拿到聊天紀錄回傳list
+                    let chatHistoryList = findChatRecord(friendId);
+                    //根據每條聊天紀錄寫成訊息，加到聊天室窗
+                    if (chatHistoryList) {
+                        chatHistoryList.forEach(ch => {
+                            let senderName = ch.sender.name;
+                            let senderId = ch.sender.memberId;
+                            let message = ch.message;
+                            let readed = ch.readed ? '已讀' : '未讀';
+                            //根據聊天紀錄發送是用戶本人或是好友，用不同訊息表現方式
+                            //如果是好友發送的
+                            if (senderId != currentUser.memberId) {
+                                messageDivStr = '<div class="messageContainer sendByFriendMessage">'
+                                    + '<div>'
+                                    + '<div class="displayFlex">'
+                                    // + '<p class="sender ">' + senderName + '</p>'
+                                    + '<img src="' + $('#friendImg').attr('src') + '">'
+                                    + '<p class="message receivedMessage">' + message + '</p>'
+                                    + '</div>'
+                                    + '<div class="displayFlex">'
+                                    + '<p class="sendTime">' + moment(ch.timestamp).format('MM/DD h:mm a') + '</p>'
+                                    + '</div>'
+                                    + '</div></div>';
+                            } else {
+                                //如果是本人發送的
+                                messageDivStr = '<div class="messageContainer sendByUserMessage">'
+                                    + '<div>'
+                                    + '<div class="displayFlex sendByUserMessage">'
+                                    // + '<p class="sender">' + senderName + '</p>'
+                                    + getUserImgStr(currentUser)
+                                    + '<p class="message">' + message + '</p>'
+                                    + '</div>'
+                                    + '<div class="displayFlex sendByUserMessage">'
+                                    + '<p class="readed">' + readed + '</p>'
+                                    + '<p class="sendTime">' + moment(ch.timestamp).format('MM/DD h:mm a') + '</p>'
+                                    + '</div>'
+                                    + '</div></div>';
+                            }
+                            $("#chatBox").prepend(messageDivStr);
+                        });
+                    }
                 }
 
 

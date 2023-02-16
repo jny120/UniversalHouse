@@ -1,25 +1,44 @@
 package tw.forum.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Component
 @Table(name = "status")
 public class Status {
 	
+	@ManyToOne
+	@JsonIgnoreProperties("status")
+	@JoinColumn(name = "ARTICLEID", updatable = false)
+	private Article article;
+
+	public Article getArticle() {
+		return article;
+	}
+
+	public void setArticle(Article article) {
+		this.article = article;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "STATUSID")
 	private Integer statusId;
 	
-	@Column(name = "ARTICLEID")
+	@Column(name = "ARTICLEID", insertable = false, updatable = false)
 	private Integer articleId;
 
 	@Column(name = "MEMBERPK")
@@ -36,6 +55,12 @@ public class Status {
 	
 	@Column(name = "UNLIKE")
 	private Integer unlike;
+
+	@Column(name = "REPORTEDREASON")
+	private String reportedReason;
+	
+	@Column(name = "UPDATETIME")
+	private Timestamp updateTime;
 
 	
 	public Integer getStatusId() {
@@ -94,4 +119,22 @@ public class Status {
 		this.unlike = unlike;
 	}
 
+	public String getReportedReason() {
+		return reportedReason;
+	}
+
+	public void setReportedReason(String reportedReason) {
+		this.reportedReason = reportedReason;
+	}
+
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	
+	
 }

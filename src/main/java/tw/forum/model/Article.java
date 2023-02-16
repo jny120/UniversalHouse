@@ -1,5 +1,6 @@
 ﻿package tw.forum.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +26,9 @@ import tw.member.model.Member;
 @Entity
 @Component
 @Table(name = "article")
-public class Article {
+public class Article implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	@JsonIgnoreProperties("article")
@@ -43,6 +45,19 @@ public class Article {
 	@JsonIgnore
 	@JsonIgnoreProperties("article")
 	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+	private List<Status> userStatus = new ArrayList<Status>();
+
+	public List<Status> getUserStatus() {
+		return userStatus;
+	}
+	public void setUserStatus(List<Status> userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	
+	@JsonIgnore
+	@JsonIgnoreProperties("article")
+	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public List<Comment> getComments() {
@@ -50,18 +65,6 @@ public class Article {
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
-	}
-
-	@JsonIgnore
-	@JsonIgnoreProperties("article")
-	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-	private List<Image> images = new ArrayList<Image>();
-
-	public List<Image> getImages() {
-		return images;
-	}
-	public void setImages(List<Image> images) {
-		this.images = images;
 	}
 
 	@Id
@@ -74,7 +77,7 @@ public class Article {
 
 	@Column(name = "UPDATETIME")
 	private Timestamp updateTime;
-
+	
 	@Column(name = "TOPICNAME")
 	private String topicName;
 
@@ -95,6 +98,9 @@ public class Article {
 	
 	@Column(name = "STATUS")
 	private String status;
+	
+	@Column(name = "COVER")
+	private byte[] cover;
 	
 	public Integer getArticleId() {
 		return articleId;
@@ -127,7 +133,7 @@ public class Article {
 	public void setTopicName(String topicName) {
 		this.topicName = topicName;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -175,6 +181,13 @@ public class Article {
 	public void setViews(Integer views) {
 		this.views = views;
 	}
-
 	
+	public byte[] getCover() {
+		return cover;
+	}
+	
+	public void setCover(byte[] cover) {
+		this.cover = cover;
+	}
+
 }

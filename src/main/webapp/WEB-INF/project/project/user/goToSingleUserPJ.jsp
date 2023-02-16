@@ -194,7 +194,7 @@ body {
 								</div>
 							</div>
 						</div>
-						<form class="t1" action="/admin/projects/updateSingleProject"
+						<form class="t1" action="/users/projects/updateSingleUserProject"
 							method="POST">
 							<c:choose>
 								<c:when test="${project.pjClass=='委託'}">
@@ -261,7 +261,7 @@ body {
 											<c:when test="${not empty project.pjImgs}">
 												<c:forEach var="img" items="${project.pjImgs}">
 													<img id="imgCss"
-														src="<c:url value='/admin/projects/showPJImg?imgID=${img.imgID}'/>" />
+														src="<c:url value='/projects/showPJImg?imgID=${img.imgID}'/>" />
 												</c:forEach>
 											</c:when>
 											<c:otherwise>

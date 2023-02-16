@@ -93,7 +93,7 @@
                             <li><a href="spaceAdminSystem.controller">場地租借</a></li>
                             <li><a href="/">課程</a></li>
                             <li><a href="/testBackstage">測驗</a></li>
-                            <li><a href="frontPage">論壇</a></li>
+                            <li><a href="/frontPage">論壇</a></li>
                         </ul>
                     </nav>
                     <!-- Button Group -->
@@ -131,7 +131,7 @@
                                 <div class="checkout_details_area mt-50 clearfix">
 
                                     <div class="cart-title" style="text-align: center;">
-                                        <h2>Login</h2>
+                                        <h2></h2>
                                         <hr>
                                         <p></p>
                                     </div>

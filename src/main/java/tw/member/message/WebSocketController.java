@@ -38,14 +38,33 @@ public class WebSocketController {
 
 	@MessageMapping("/chat")
 	public void sendChatMessage(@Payload ChatMessage chatMessage) {
-		simpMessageSendingOperations.convertAndSendToUser(
-				chatMessage.getReceiver(), "/queue/private", chatMessage);
+		simpMessageSendingOperations.convertAndSendToUser(chatMessage.getReceiver(), "/queue/private", chatMessage);
 		Member sender = mService.findByMemberId(chatMessage.getSender());
 		Member receiver = mService.findByMemberId(chatMessage.getReceiver());
 		ChatHistory cm = new ChatHistory( 
 				sender, receiver,
 				chatMessage.getMessage() );
 		chService.save(cm);
+	}
+	
+	@MessageMapping("/read")
+	public void readChatMessage(@Payload ChatMessage chatMessage) {
+		simpMessageSendingOperations.convertAndSendToUser(chatMessage.getReceiver(), "/queue/private", chatMessage);
+		String senderId = chatMessage.getSender();
+		String receiverId = chatMessage.getReceiver();
+		//找到之前和這個使用者的對話紀錄
+		List<ChatHistory> chList = chService.findBySenderAndReceiver(senderId,receiverId);
+		for( ChatHistory ch : chList ) {
+			if(  senderId.equals(ch.getReceiver().getMemberId())  ) {
+				//設定已讀聊天紀錄
+				ch.setReaded(true);
+				chService.update(ch);
+			}
+		}
+		System.out.println("已讀");
+		System.out.println("已讀");
+		System.out.println("已讀");
+		System.out.println("已讀");
 	}
 	
 //	@PostMapping("/findLastMsg/{friendId}")

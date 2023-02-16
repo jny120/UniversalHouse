@@ -97,7 +97,7 @@
                         <li><a href="space.controller">場地租借</a></li>
                         <li><a href="/showAllProduct">課程</a></li>
                         <li><a href="/testBackstage">測驗</a></li>
-                        <li><a href="frontPage">論壇</a></li>
+                        <li><a href="/frontPage">論壇</a></li>
                     </ul>
                 </nav>
                 <!-- Button Group -->
@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="col-12 mb-3">
                                         <label for="password">密碼: </label>
-                                        <input type="password" class="form-control" id="password" name="Password"
+                                        <input type="password" class="form-control" id="password" name="password"
                                             placeholder="Password" value="">
                                     </div>
 

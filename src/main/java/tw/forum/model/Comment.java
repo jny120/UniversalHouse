@@ -43,6 +43,9 @@ public class Comment {
 
 	@Column(name = "MEMBERPK")
 	private Integer memberPk;
+	
+	@Column(name = "NAME")
+	private String name;
 
 	@Column(name = "UPDATETIME")
 	private Timestamp updateTime;
@@ -52,12 +55,6 @@ public class Comment {
 
 	@Column(name = "STATUS")
 	private String status;
-
-	@Column(name = "THUMBUP")
-	private Integer thumbUp;
-
-	@Column(name = "UNLIKE")
-	private Integer unlike;
 	
 	@Column(name = "REPLYID")
 	private Integer replyId;
@@ -70,28 +67,22 @@ public class Comment {
 		this.memberPk = memberPk;
 	}
 
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public Integer getThumbUp() {
-		return thumbUp;
-	}
-
-	public void setThumbUp(Integer thumbUp) {
-		this.thumbUp = thumbUp;
-	}
-
-	public Integer getUnlike() {
-		return unlike;
-	}
-
-	public void setUnlike(Integer unlike) {
-		this.unlike = unlike;
 	}
 
 	public Integer getCommentId() {
@@ -118,7 +109,7 @@ public class Comment {
 		this.content = content;
 	}
 
-	public Integer getREPLYID() {
+	public Integer getReplyId() {
 		return replyId;
 	}
 

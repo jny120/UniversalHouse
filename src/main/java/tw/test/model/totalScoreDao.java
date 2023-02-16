@@ -12,8 +12,8 @@ public class totalScoreDao {
 
 	@Autowired
 	private totalScoreRepository sRepo;
-	@Autowired
-	private testerRepository testerRepository;
+	// @Autowired
+	// private testerRepository testerRepository;
 
 	public byte[] imgGallery(Integer id) {
 		byte[] gallery = sRepo.findById(id).get().getGallerybean().getTestImage();
@@ -29,6 +29,25 @@ public class totalScoreDao {
 		System.out.println(s + "addSumTest");
 		totalScore.setMemberId(mb);
 		totalScore.setFraction(s);
+		sRepo.save(totalScore);
+
+		return totalScore;
+	}
+
+	public totalScore save(totalScore totalScore) {
+		return sRepo.save(totalScore);
+
+	}
+
+	public totalScore addSumTest4(String mb, String s, String r, String r2, String n) {
+
+		totalScore totalScore = new totalScore();
+		System.out.println(mb + "addSumTest");
+		System.out.println(s + "addSumTest");
+		totalScore.setMemberId(mb);
+		totalScore.setFraction(s);
+		totalScore.setInputRadio(r);
+		totalScore.setInputRadio2(r2);
 		sRepo.save(totalScore);
 
 		return totalScore;
@@ -52,8 +71,12 @@ public class totalScoreDao {
 
 	}
 
-	public totalScore findByFraction(String fraction) {
+	public List<totalScore> showallMembertest(String memberid) {
+		return sRepo.checkmemberTest(memberid);
 
-		return null;
 	}
+	// 找測試者的所有結果
+	// public List<totalScore> readByMemberId(String memberId) {
+	// return sRepo.findByMemberId(memberId);
+	// }
 }

@@ -13,8 +13,9 @@ public class JspMainController {
 		return "space/admin/insertSpace";
 	}
 	
-//	@GetMapping("/admin/BS.controller")
-//	public String processShowSystemJsp() {
-//		return "space/admin/backStage";
-//	}
+	@GetMapping("/user/space")
+	public String processShowSpaceJsp() {
+		return "space/user/space";
+	}
+	
 }

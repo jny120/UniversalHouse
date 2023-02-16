@@ -172,10 +172,27 @@ body {
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
-				<ul>
-					<li class="active" id="openShopSideBar1"><a href="1">想找人才</a></li>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active"><a class="nav-link" href="/">首頁</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/projects/showAllServiceFront/1">專案</a></li>
+
+					<li><a href="/projects/showAllServiceFront/1"
+						id="openShopSideBar1">想找人才</a></li>
 					<!--  Catagories  -->
-					<div class="catagories-menu" id='showShopSideBar1'>
+					<div class="catagories-menu" id="showShopSideBar1">
+						<ul>
+							<li><a href="/projects/selectServiceField/文書/1">文書</a></li>
+							<li><a href="/projects/selectServiceField/生活/1">生活</a></li>
+							<li><a href="/projects/selectServiceField/設計/1">設計</a></li>
+							<li><a href="/projects/selectServiceField/資訊/1">資訊</a></li>
+							<li><a href="/projects/selectServiceField/影視/1">影視</a></li>
+							<li><a href="/projects/selectServiceField/顧問/1">顧問</a></li>
+						</ul>
+					</div>
+					<li class="active" id="openShopSideBar2"><a href="1">我想接案</a></li>
+					<!--  Catagories  -->
+					<div class="catagories-menu" id="showShopSideBar2">
 						<ul>
 							<li><a href="/projects/selectEntrustField/文書/1">文書</a></li>
 							<li><a href="/projects/selectEntrustField/生活/1">生活</a></li>
@@ -185,18 +202,14 @@ body {
 							<li><a href="/projects/selectEntrustField/顧問/1">顧問</a></li>
 						</ul>
 					</div>
-					<li id="openShopSideBar2"><a
-						href="/projects/showAllEntrusFront/1">我想接案</a></li>
-					<div class="catagories-menu" id='showShopSideBar2'>
-						<ul>
-							<li><a href="/projects/selectEntrustField/文書/1">文書</a></li>
-							<li><a href="/projects/selectEntrustField/生活/1">生活</a></li>
-							<li><a href="/projects/selectEntrustField/設計/1">設計</a></li>
-							<li><a href="/projects/selectEntrustField/資訊/1">資訊</a></li>
-							<li><a href="/projects/selectEntrustField/影視/1">影視</a></li>
-							<li><a href="/projects/selectEntrustField/顧問/1">顧問</a></li>
-						</ul>
-					</div>
+					<li class="nav-item"><a class="nav-link"
+						href="/space.controller">場地租借</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/showAllProduct">課程</a></li>
+					<li class="nav-item"><a class="nav-link" href="/frontDesk">測驗</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/frontPage">論壇</a>
+					</li>
 				</ul>
 			</nav>
 			<!-- Button Group -->
@@ -268,7 +281,7 @@ body {
 					</c:if>
 					<c:if test="${not empty project}">
 						<c:forEach var="pj" items="${project}">
-							<div class="col-12 col-sm-3 col-md-12 col-xl-2">
+							<div class="col-12 col-sm-3 col-md-12 col-xl-3">
 								<div class="single-product-wrapper">
 									<!-- Product Image -->
 									<div class="product-img">
@@ -301,11 +314,7 @@ body {
 										<!-- Ratings & Cart -->
 										<div class="ratings-cart text-right">
 											<div class="ratings">
-												<i class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i>
+												
 											</div>
 											<div class="cart">
 												<a

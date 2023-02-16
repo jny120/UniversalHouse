@@ -24,13 +24,6 @@ public class TestService {
 	@Autowired
 	private testRepository tRepo;
 
-	// @Autowired
-	// private testCenterDao tDao;
-	// @Autowired
-	// private totalScoreDao sDao;
-	// @Autowired
-	// private galleryDao gDao;
-
 	public TestService() {
 		// this.tDao = new testCenterDao();
 		// this.sDao = new totalScoreDao();
@@ -39,8 +32,9 @@ public class TestService {
 
 	public testCenterBean findByPk(Integer testPk) {
 		testCenterBean b1 = null;
+		// System.out.println(testPk);
 		Optional<testCenterBean> findById = tRepo.findById(testPk);
-		if (findById.isEmpty()) {
+		if (findById != null) {
 			b1 = findById.get();
 		}
 		return b1;
@@ -59,7 +53,7 @@ public class TestService {
 				InputStreamReader isr = new InputStreamReader(in, "utf-8");
 				BufferedReader br = new BufferedReader(isr)) {
 			CSVFormat.Builder builder = CSVFormat.Builder.create();
-			builder.setHeader("testId", "examinationQuestion", "field", "options", "options2", "options3", "options4");
+			builder.setHeader("testId", "examinationquestion", "field", "options", "options2", "options3", "options4");
 			builder.setSkipHeaderRecord(true);
 			Iterable<CSVRecord> records = builder.build().parse(br);
 			List<testCenterBean> m = new ArrayList<>();
@@ -67,7 +61,7 @@ public class TestService {
 			for (CSVRecord record : records) {
 				testCenterBean mem = new testCenterBean();
 				mem.setTestId(record.get(0).replace(",", ""));
-				mem.setExaminationQuestion(record.get(1).replace(",", ""));
+				mem.setExaminationquestion(record.get(1).replace(",", ""));
 				mem.setField(record.get(2).replace(",", ""));
 				mem.setOptions(record.get(3).replace(",", ""));
 				mem.setOptions2(record.get(4).replace(",", ""));
@@ -93,7 +87,13 @@ public class TestService {
 	};
 
 	public void deleteById(Integer id) {
+
 		tRepo.deleteById(id);
+
+	}
+
+	public List<testCenterBean> readAll() {
+		return tRepo.findAll();
 	}
 
 }

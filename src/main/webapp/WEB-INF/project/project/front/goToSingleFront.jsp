@@ -33,7 +33,25 @@
 }
 
 .evaluationCss {
-	height: 300px;
+	height: 100px;
+	text-align: center;
+	border: solid 1px lightgray;
+}
+
+.evaluationCss input {
+	height: 50px;
+	margin: 20px 5px;
+	border: 0px;
+}
+
+.evaluationCss input:hover {
+	background-color: gray;
+	color: white;
+}
+
+.evaluationCss div {
+	margin: 10px 5px;
+	font-size: 24px;
 }
 
 .single_product_desc {
@@ -70,6 +88,20 @@
 	background: #f80;
 	border-radius: 5%;
 	object-fit: cover;
+}
+
+.imgCss {
+	width: 100px;
+	border-radius: 50%;
+	margin-right: 30px;
+}
+
+.evaluationBlock {
+	margin-top: 50px;
+}
+
+.main-content-wrapper .header-area .amado-nav li a {
+	font-size: 20px;
 }
 </style>
 </head>
@@ -128,7 +160,8 @@
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
 				<ul>
-					<li class="active" id="openShopSideBar1"><a href="/projects/showAllServiceFront/1">想找人才</a></li>
+					<li class="active" id="openShopSideBar1"><a
+						href="/projects/showAllServiceFront/1">想找人才</a></li>
 					<!--  Catagories  -->
 					<div class="catagories-menu" id='showShopSideBar1'>
 						<ul>
@@ -178,8 +211,7 @@
 									<div id="product_details_slider" class="carousel slide"
 										data-ride="carousel">
 										<ol class="carousel-indicators">
-										
-										
+
 											<c:forEach var="img" items="${project.pjImgs}"
 												varStatus="status">
 												<li class="active" data-target="#product_details_slider"
@@ -220,18 +252,17 @@
 									<!-- Product Meta Data -->
 									<div class="product-meta-data">
 										<div class="line"></div>
-										<a href="#">
-											<input type="hidden" id="pjID" value="${project.pjID}"><h6>${project.pjName}</h6>
+										<a href="#"> <input type="hidden" id="pjID"
+											value="${project.pjID}">
+											<h6>${project.pjName}</h6>
 										</a>
 										<!-- Ratings & Review -->
 										<div
 											class="ratings-review mb-15 d-flex align-items-center justify-content-between">
 											<div class="ratings">
-												<i class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i>
+												<c:forEach var="i" begin="1" end="${evAvg}">
+													<i class="fa fa-star" aria-hidden="true"></i>
+												</c:forEach>
 											</div>
 										</div>
 										<p class="product-price">NT. ${project.pjPrice}</p>
@@ -250,18 +281,34 @@
 								</div>
 							</div>
 
-
-
 							<div class="col-12 col-lg-3 memberSiderBar">
 								<br>
 								<div class="single_product_desc">
-									<img src="/amado-master/img\product-img\pro-big-1.jpg" alt="">
+									<c:choose>
+										<c:when test="${project.member.memberImage == null}">
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss" src="/images/member/member.png"
+													alt="Product" width="200px" vspace="10" hspace="10">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss"
+													src="/ShowMemberImgServlet.do/${project.member.memberId}"
+													alt="Product" width="200px" vspace="10" hspace="10"
+													align="left">
+											</div>
+											<hr>
+										</c:otherwise>
+									</c:choose>
 									<table class="tbStyle">
 										<tr>
 											<td id="memberID">${project.member.memberId}</td>
 										</tr>
 										<tr>
-											<td>評價分數</td>
+											<td><c:forEach var="i" begin="1" end="${ev.evClientEV}">
+													<i class="fa fa-star" aria-hidden="true"></i>
+												</c:forEach></td>
 										</tr>
 										<tr>
 											<td>${project.member.location}</td>
@@ -270,7 +317,7 @@
 											<td>${project.member.email}</td>
 										</tr>
 										<tr>
-											<td>成交件數</td>
+											<td>成交件數： ${count}件</td>
 										</tr>
 									</table>
 								</div>
@@ -278,11 +325,75 @@
 						</div>
 						<hr>
 					</div>
-					<h5>評價</h5>
-					<div class="row">
-						<div class="col-12 evaluationCss" style="background-color: aqua;">
-							<br>
-							<h6>評價資訊</h6>
+					<div class="row evaluationCss">
+						<div class="col-12 col-lg-3">
+							${evAvg}/5星
+							<div class="ratings">
+								<c:forEach var="i" begin="1" end="${evAvg}">
+									<i class="fa fa-star" aria-hidden="true"></i>
+								</c:forEach>
+							</div>
+						</div>
+						<input class="col-12 col-lg-1" type="button"
+							onClick="window.location.reload();" value="全部"> <input
+							class="starField col-12 col-lg-1" type="button" value="1星">
+						<input class="starField col-12 col-lg-1" type="button" value="2星">
+						<input class="starField col-12 col-lg-1" type="button" value="3星">
+						<input class="starField col-12 col-lg-1" type="button" value="4星">
+						<input class="starField col-12 col-lg-1" type="button" value="5星">
+					</div>
+					<div class="cart-table clearfix">
+						<div class="row allevaluationBlock">
+							<c:if test="${ empty evaluation}">
+								<h5 style="text-align: center">查無案件資料</h5>
+							</c:if>
+							<c:if test="${not empty evaluation}">
+								<c:forEach var="ev" items="${evaluation}">
+									<c:if test="${ev.evClientEV != 0}">
+										<div class="evaluationBlock col-12 col-sm-12"
+											style="width: 100%; margin-left: 25px;">
+											<c:choose>
+												<c:when test="${project.member.memberImage == null}">
+													<div style="height: 100px;">
+														<img class="imgCss" src="/images/member/member.png"
+															alt="Product" width="200px" vspace="10" hspace="10"
+															align="left">
+														<div class="ratings">
+															<c:forEach var="i" begin="1" end="${evAvg}">
+																<i class="fa fa-star" aria-hidden="true"></i>
+															</c:forEach>
+														</div>
+														<div style="height: 50px">
+															<span>${ev.evClientComment}</span>
+														</div>
+														<span>${ev.evCompletionDate}</span><br>
+													</div>
+													<hr>
+												</c:when>
+												<c:otherwise>
+													<div style="height: 100px;">
+														<img class="imgCss"
+															src="/ShowMemberImgServlet.do/${project.member.memberId}"
+															alt="Product" width="200px" vspace="10" hspace="10"
+															align="left">
+														<div class="ratings">
+															<c:forEach var="i" begin="1" end="${evAvg}">
+																<i class="fa fa-star" aria-hidden="true"></i>
+															</c:forEach>
+														</div>
+														<div style="height: 50px">
+															<span>${ev.evClientComment}</span>
+														</div>
+														<span>${ev.evCompletionDate}</span><br>
+													</div>
+													<hr>
+												</c:otherwise>
+											</c:choose>
+										</div>
+									</c:if>
+								</c:forEach>
+
+							</c:if>
 						</div>
 					</div>
 					<br>
@@ -302,16 +413,6 @@
 											<h6>${project.pjName}</h6>
 										</a>
 										<!-- Ratings & Review -->
-										<div
-											class="ratings-review mb-15 d-flex align-items-center justify-content-between">
-											<div class="ratings">
-												<i class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i> <i
-													class="fa fa-star" aria-hidden="true"></i>
-											</div>
-										</div>
 										<p class="product-price">NT. ${project.pjPrice}</p>
 										<div>
 											<p>${project.pjServerLocation}</p>
@@ -333,7 +434,23 @@
 							<div class="col-12 col-lg-4 memberSiderBar">
 								<br>
 								<div class="single_product_desc">
-									<img src="/amado-master/img\product-img\pro-big-1.jpg" alt="">
+									<c:choose>
+										<c:when test="${project.member.memberImage == null}">
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss" src="/images/member/member.png"
+													alt="Product" width="200px" vspace="10" hspace="10">
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div style="height: 100px; width:100px; margin: auto;">
+												<img class="imgCss"
+													src="/ShowMemberImgServlet.do/${project.member.memberId}"
+													alt="Product" width="200px" vspace="10" hspace="10"
+													align="left">
+											</div>
+											<hr>
+										</c:otherwise>
+									</c:choose>
 									<table class="tbStyle">
 										<tr>
 											<td>${project.member.memberId}</td>
@@ -348,7 +465,7 @@
 											<td>${project.member.email}</td>
 										</tr>
 										<tr>
-											<td>成交件數</td>
+											<td>成交件數： ${count}件</td>
 										</tr>
 									</table>
 								</div>
@@ -374,14 +491,7 @@
 			<div class="row align-items-center">
 				<!-- Newsletter Text -->
 				<div class="col-12 col-lg-6 col-xl-7">
-					<div class="newsletter-text mb-100">
-						<h2>
-							Subscribe for a <span>25% Discount</span>
-						</h2>
-						<p>Nulla ac convallis lorem, eget euismod nisl. Donec in
-							libero sit amet mi vulputate consectetur. Donec auctor interdum
-							purus, ac finibus massa bibendum nec.</p>
-					</div>
+					<div class="newsletter-text mb-100"></div>
 				</div>
 				<!-- Newsletter Form -->
 				<div class="col-12 col-lg-6 col-xl-5">
@@ -569,6 +679,58 @@
 				}
 			})
 		});
+
+		$('.starField')
+				.on(
+						'click',
+						function() {
+							var pjID = $('#pjID').val();
+							var evStar = $(this).val();
+							var ev = evStar.substr(0, 1);
+
+							$
+									.ajax({
+										type : 'get',
+										url : '/projects/projectFrontEv/1',
+										dataType : 'JSON',
+										contentType : 'application/json',
+										data : {
+											pjID : pjID,
+											ev : ev
+										},
+										success : function(evList) {
+											$('.allevaluationBlock').empty("");
+											$
+													.each(
+															evList,
+															function(i, ev) {
+																if (ev.member.memberImage == null) {
+																	var beginStr = "<div class='evaluationBlock col-12 col-sm-12' style='width: 100%; margin-left: 25px;'><div style='height: 100px;'>";
+																	var contentStr = "<img class='imgCss' src='/images/member/member.png' alt='Product' width='200px' vspace='10' hspace='10' align='left'>"
+																			+ "<div class='ratings'>";
+																	var starStr = "";
+																	var endStr = "</div><div style='height: 50px'><span>"
+																			+ ev.evClientComment
+																			+ "</span></div><span>"
+																			+ ev.evCompletionDate
+																			+ "</span><br></div><hr></div>";
+
+																	for (let i = 0; i < ev.evClientEV; i++) {
+																		starStr += "<i class='fa fa-star' aria-hidden='true'></i>";
+																	}
+																	var totalStr = beginStr
+																			+ contentStr
+																			+ starStr
+																			+ endStr;
+																	$(
+																			'.allevaluationBlock')
+																			.append(
+																					totalStr);
+																}
+															})
+										}
+									});
+						});
 	</script>
 </body>
 

@@ -64,4 +64,8 @@ public class ProjectService {
 	public Page<Project> findByPjClassAndFieldNameLike(String string, String field, Pageable pageable) {
 		return projectRepository.findByPjClassAndFieldNameLike(string, field, pageable);
 	}
+
+	public Page<Project> findByPjClassAndFieldName(String string, String field, Pageable pageable) {
+		return projectRepository.findByPjClassAndFieldName(string, field, pageable);
+	}
 }

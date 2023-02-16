@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import tw.forum.model.Article;
+import tw.project.evaluation.model.Evaluation;
 import tw.project.project.model.Project;
 
 @Entity
@@ -109,10 +110,21 @@ public class Member implements Serializable {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Article> articles = new ArrayList<Article>();
 	
+
 	@JsonIgnore
 	@JsonIgnoreProperties("member")
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Project> projects = new ArrayList<Project>();
+	
+	@JsonIgnore
+	@JsonIgnoreProperties("member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	private List<Evaluation> evaluations = new ArrayList<Evaluation>();
+
+	@JsonIgnore
+	@JsonIgnoreProperties("Servicer")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	private List<Evaluation> ServiceEvaluations = new ArrayList<Evaluation>();
 	
 	public Member() {
 	}

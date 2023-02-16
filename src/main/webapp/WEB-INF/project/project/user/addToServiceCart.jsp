@@ -414,6 +414,23 @@ body {
 	<script src="/amado-master/js/active.js"></script>
 	<!-- 我額外增加的script -->
 	<script>
-		
+	$('.tb').on('click', '#complete', function() {
+		var ev_ID = $(this).parent().siblings().eq(0).children('input').val();
+		var td = $(this).parent().siblings().eq(4);
+		console.log(ev_ID);
+		$.ajax({
+			type : 'post',
+			url : '/users/projects/projectDeal',
+			data : {
+				ev_ID : ev_ID
+			},
+			success : function() {
+				alert('已完成案件')
+			},
+			complete : function(){
+				td.html('已完成');
+			}
+		});
+	});
 	</script>
 </body>

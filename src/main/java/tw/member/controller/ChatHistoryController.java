@@ -27,7 +27,14 @@ public class ChatHistoryController {
 	private List<ChatHistory> findChatHistory( 
 			Principal p,
 			@PathVariable("friendId") String  friendId){
-		List<ChatHistory> chList = chService.findBySenderAndReceiver(p.getName(),friendId);
+		String userId = p.getName();
+		List<ChatHistory> chList = chService.findBySenderAndReceiver(userId,friendId);
+		for( ChatHistory ch : chList ) {
+			if(  userId.equals(ch.getReceiver().getMemberId())  ) {
+				ch.setReaded(true);
+				chService.update(ch);
+			}
+		}
 		return chList;
 	}
 	

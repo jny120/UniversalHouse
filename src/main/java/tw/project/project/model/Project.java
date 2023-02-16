@@ -20,6 +20,9 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import tw.member.model.Member;
 import tw.project.evaluation.model.Evaluation;
 import tw.project.pjImg.model.PjImg;
@@ -74,9 +77,13 @@ public class Project{
 	@Column(name = "PJSTATUS")
 	private String pjStatus;
 	
+	@JsonIgnore
+	@JsonIgnoreProperties("project")
 	@OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
 	private List<Evaluation> evaluations;
 	
+	@JsonIgnore
+	@JsonIgnoreProperties("project")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "project",cascade = CascadeType.ALL)
 	private List<PjImg> pjImgs;
 
